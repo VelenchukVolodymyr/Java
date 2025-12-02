@@ -1,0 +1,5 @@
+Category;Electronics;Devices and gadgets
+Supplier;TechCorp;techcorp@gmail.com
+Customer;Anna;Petrenko;anna.petrenko@gmail.com
+Category;MissingName
+Customer;Ivan;Kovalenko;

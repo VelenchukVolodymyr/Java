@@ -1,0 +1,90 @@
+package main.ua.Electronics_Store.model;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Objects;
+
+import java.util.Comparator;
+
+public class Order {
+    private Customer customer;
+    private List<Product> products;
+    private LocalDate orderDate;
+
+   public enum OrderStatus {
+       PENDING,
+       PROCESSING,
+       SHIPPED,
+       DELIVERED,
+       CANCELED
+   }
+
+
+    private Order.OrderStatus status;
+
+    public void setStatus(Order.OrderStatus status) {
+        this.status = status;
+    }
+
+    public Order.OrderStatus getStatus() {
+        return status;
+    }
+
+    public Order(Customer customer, List<Product> products, LocalDate orderDate) {
+        StringBuilder sb = new StringBuilder();
+        if (customer == null) sb.append("customer: cannot be null; ");
+        if (products == null || products.isEmpty()) sb.append("products: must contain at least one product; ");
+        if (orderDate == null) sb.append("orderDate: cannot be null; ");
+        if (sb.length() > 0) throw new IllegalArgumentException(sb.toString());
+        this.customer = customer;
+        this.products = products;
+        this.orderDate = orderDate;
+    }
+
+    public static Order of(Customer customer, List<Product> products, LocalDate orderDate) {
+        return new Order(customer, products, orderDate);
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public LocalDate getOrderDate() {
+        return orderDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{customer=%s, products=%s, date=%s}"
+                .formatted(customer, products, orderDate);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Order order)) return false;
+        return Objects.equals(customer, order.customer) &&
+                Objects.equals(products, order.products) &&
+                Objects.equals(orderDate, order.orderDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(customer, products, orderDate);
+    }
+
+
+
+    public static Comparator<Order> byDate() {
+        return Comparator.comparing(Order::getOrderDate);
+    }
+
+    public static Comparator<Order> byCustomerName() {
+        return Comparator.comparing(order -> order.getCustomer().firstName());
+    }
+
+}
